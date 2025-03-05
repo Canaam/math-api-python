@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: Math API
+  description: API para realizar operações matemáticas de soma e média.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+    description: Servidor local
+paths:
+  /sum:
+    post:
+      summary: Soma um vetor de inteiros.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                numbers:
+                  type: array
+                  items:
+                    type: integer
+              example:
+                numbers: [1, 2, 3, 4, 5]
+      responses:
+        '200':
+          description: Resultado da soma.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: integer
+                example:
+                  result: 15
+        '400':
+          description: Requisição inválida.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "A lista deve conter apenas números."
+  /average:
+    post:
+      summary: Calcula a média de um vetor de inteiros.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                numbers:
+                  type: array
+                  items:
+                    type: integer
+              example:
+                numbers: [1, 2, 3, 4, 5]
+      responses:
+        '200':
+          description: Resultado da média.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: number
+                    format: float
+                example:
+                  result: 3.0
+        '400':
+          description: Requisição inválida.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "A lista não pode estar vazia."
