@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 from flask import Blueprint, request, jsonify
 from app.services.numbers_service import sum_numbers, average_numbers
@@ -17,20 +17,15 @@ def sum_numbers_route():
     result = sum_numbers(numbers)
     return jsonify({"result": result})
 
-@numbers_bp.route('/average', methods=['GET'])
+@numbers_bp.route('/average', methods=['POST'])
 def average_numbers_route():
-    """Endpoint para calcular a m�dia de uma lista de numeros."""
-    numbers_str = request.args.get('numbers')
+    """Endpoint para calcular a média de uma lista de numeros."""
+    data = request.get_json()
+    numbers = data.get('numbers', [])
 
-    if not numbers_str:
-        return jsonify({"error": "A lista de numeros nao foi fornecida."}), 400
-
-    try:
-        numbers = [float(n) for n in numbers_str.split(',')]
-    except ValueError:
+    if not isinstance(numbers, list) or not all(isinstance(n, (int, float)) for n in numbers):
         return jsonify({"error": "A lista deve conter apenas numeros."}), 400
-
-    if not numbers:
+    if len(numbers) == 0:
         return jsonify({"error": "A lista nao pode estar vazia."}), 400
 
     try:
